@@ -46,7 +46,7 @@ const POPULAR_DOMAINS = [
   'hey.com',
   // Proton
   'proton.me',
-  'pm.com',
+  'pm.me',
   'protonmail.com',
   'zoho.com',
   'yandex.com',
@@ -147,6 +147,7 @@ const POPULAR_TLDS = [
   'to',
   'tech',
   'tv',
+  'website',
 ];
 
 const DEFAULT_CONFIG = {
