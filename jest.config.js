@@ -1,15 +1,10 @@
+/** @type {import('jest').Config} */
 module.exports = {
-  preset: 'ts-jest',
   testEnvironment: 'node',
-  testMatch: ['**/test/**/*.spec.ts'],
-  collectCoverageFrom: [
-    '<rootDir>/src/**/*.ts',
-    '!<rootDir>/src/types/**/*.ts',
-  ],
-  globals: {
-    'ts-jest': {
-      diagnostics: false,
-      isolatedModules: true,
-    },
+  testMatch: ['<rootDir>/test/**/*.spec.ts'],
+  transform: {
+    // Type checking is done by `npm run typecheck`; tests only transpile.
+    '^.+\\.ts$': ['ts-jest', { diagnostics: false }],
   },
+  collectCoverageFrom: ['<rootDir>/src/**/*.ts'],
 };

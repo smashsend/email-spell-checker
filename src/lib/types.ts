@@ -42,4 +42,10 @@ interface EmailsPart {
   address: string;
 }
 
-export { DistanceFunction, EmailsPart, MailSuggestion, Options, UserOptions };
+export type {
+  DistanceFunction,
+  EmailsPart,
+  MailSuggestion,
+  Options,
+  UserOptions,
+};

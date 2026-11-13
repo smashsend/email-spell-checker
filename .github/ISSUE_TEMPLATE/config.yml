@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 📖 Documentation
+    url: https://github.com/smashsend/email-spell-checker#readme
+    about: Usage, options and how the default lists work.

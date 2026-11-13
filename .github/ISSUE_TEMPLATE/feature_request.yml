@@ -1,0 +1,31 @@
+name: 🌈 Feature request
+description: Suggest an improvement or a new option.
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem are you trying to solve?
+      placeholder: When a user types ..., the checker ...
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: What would you like to happen?
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives you've considered
+  - type: dropdown
+    id: pr
+    attributes:
+      label: Would you like to open a PR for this?
+      options:
+        - Yes, and I know how to start
+        - Yes, but I'd need some guidance
+        - No
+    validations:
+      required: true
