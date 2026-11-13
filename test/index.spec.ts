@@ -1,3 +1,4 @@
+import MailSpellChecker, { POPULAR_SLDS, POPULAR_TLDS } from '../src';
 import run from '../src/lib/run';
 import distanceFunction from '../src/lib/fuzzy-detection/sift3-distance';
 import encodeEmail from '../src/lib/helpers/encode-email';
@@ -407,5 +408,36 @@ describe('default "mail" handling (#32)', () => {
     expect(run({ email: 'a@hotmial.com' })?.full).toBe('a@hotmail.com');
     expect(run({ email: 'a@outlok.com' })?.full).toBe('a@outlook.com');
     expect(run({ email: 'a@yahooo.com' })?.full).toBe('a@yahoo.com');
+  });
+});
+
+describe('public config exports (#19)', () => {
+  it('exports the default second-level domains', () => {
+    expect(MailSpellChecker.POPULAR_SLDS).toEqual(
+      expect.arrayContaining(['yahoo', 'hotmail', 'live', 'outlook'])
+    );
+    expect(POPULAR_SLDS).toBe(MailSpellChecker.POPULAR_SLDS);
+  });
+
+  it('lets users extend the defaults', () => {
+    expect(
+      run({
+        email: 'a@wala.co.il',
+        secondLevelDomains: [...POPULAR_SLDS, 'walla'],
+        topLevelDomains: [...POPULAR_TLDS, 'co.il'],
+      })?.full
+    ).toBe('a@walla.co.il');
+  });
+
+  it('throws a clear error when email is missing', () => {
+    expect(() => run({} as any)).toThrow('email must be a string');
+  });
+
+  it('calls the empty callback, not the suggested one, with no suggestion', () => {
+    const suggested = jest.fn();
+    const empty = jest.fn();
+    run({ email: 'a@gmail.com', suggested, empty });
+    expect(empty).toHaveBeenCalled();
+    expect(suggested).not.toHaveBeenCalled();
   });
 });

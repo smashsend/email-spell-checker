@@ -2,6 +2,7 @@ import { UserOptions } from '../types';
 import assert from './assert';
 
 function assertValidUserOptions(options: UserOptions): void {
+  assert(typeof options.email === 'string', 'email must be a string');
   assert(Array.isArray(options.domains), 'domains must be an array');
   assert(
     Array.isArray(options.topLevelDomains),
