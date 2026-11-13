@@ -18,7 +18,7 @@ function getOptions(userOptions: UserOptions): Options {
     topLevelThreshold:
       userOptions.topLevelThreshold || DEFAULT_CONFIG.topLevelThreshold,
     suggested: userOptions.suggested || undefined,
-    empty: userOptions.suggested || undefined,
+    empty: userOptions.empty || undefined,
   };
 }
 

@@ -156,12 +156,18 @@ const POPULAR_TLDS = [
  */
 const KNOWN_UNSUGGESTED_DOMAINS = ['mail.com'];
 
+/***
+ * Default second-level domains (the part before the TLD). They match any TLD,
+ * so e.g. "hotmial.co.uk" is corrected to "hotmail.co.uk".
+ */
+const POPULAR_SLDS = ['yahoo', 'hotmail', 'live', 'outlook'];
+
 const DEFAULT_CONFIG = {
   domainThreshold: 2,
   domains: POPULAR_DOMAINS,
 
   secondLevelThreshold: 2,
-  secondLevelDomains: ['yahoo', 'hotmail', 'live', 'outlook'],
+  secondLevelDomains: POPULAR_SLDS,
 
   topLevelThreshold: 2,
   topLevelDomains: POPULAR_TLDS,
@@ -173,5 +179,6 @@ export {
   DEFAULT_CONFIG,
   KNOWN_UNSUGGESTED_DOMAINS,
   POPULAR_DOMAINS,
+  POPULAR_SLDS,
   POPULAR_TLDS,
 };
