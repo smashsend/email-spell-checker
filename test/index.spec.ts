@@ -457,3 +457,22 @@ describe('Israeli TLDs (#18)', () => {
     expect(run({ email: 'a@foo.net.ill' })?.full).toBe('a@foo.net.il');
   });
 });
+
+describe('untrusted input hardening', () => {
+  it('does not throw on malformed unicode (lone surrogates)', () => {
+    expect(() => run({ email: 'a@gmail.co\uD800' })).not.toThrow();
+    expect(run({ email: '\uDC00@gmial.com' })).toBeUndefined();
+  });
+
+  it('skips inputs far longer than any valid address', () => {
+    expect(
+      run({ email: 'a@' + 'x'.repeat(5_000_000) + '.com' })
+    ).toBeUndefined();
+    expect(run({ email: ' '.repeat(1000) + 'a@gmial.com' })).toBeUndefined();
+  });
+
+  it('still handles long but plausible addresses', () => {
+    const local = 'a'.repeat(64);
+    expect(run({ email: `${local}@gmial.com` })?.domain).toBe('gmail.com');
+  });
+});

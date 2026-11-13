@@ -6,8 +6,20 @@ import { MailSuggestion, Options } from './types';
 
 const PREFERRED_TLD = { domain: 'com', bias: 0.75 };
 
+// RFC 5321 limits an address to 254 characters (64 local + 255 domain octets
+// in theory). Anything well beyond that cannot be a real address, so skip the
+// work instead of processing arbitrarily large untrusted input.
+const MAX_INPUT_LENGTH = 320;
+
 function suggestEmail(opts: Options): MailSuggestion | undefined {
+  if (opts.email.length > MAX_INPUT_LENGTH) {
+    return undefined;
+  }
+
   const encodedEmail = encodeEmail(opts.email.toLowerCase());
+  if (encodedEmail === undefined) {
+    return undefined;
+  }
   const email = parseEmail(encodedEmail);
 
   if (!email) {
