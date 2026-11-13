@@ -441,3 +441,19 @@ describe('public config exports (#19)', () => {
     expect(suggested).not.toHaveBeenCalled();
   });
 });
+
+describe('Israeli TLDs (#18)', () => {
+  it.each([
+    'example@actcom.net.il',
+    'a@foo.org.il',
+    'a@uni.ac.il',
+    'a@x.gov.il',
+    'a@foo.co.il',
+  ])('does not correct %s', email => {
+    expect(run({ email })).toBeUndefined();
+  });
+
+  it('still corrects typos in them', () => {
+    expect(run({ email: 'a@foo.net.ill' })?.full).toBe('a@foo.net.il');
+  });
+});
