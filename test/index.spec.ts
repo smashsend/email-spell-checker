@@ -390,3 +390,22 @@ function findClosestDomainWithPreference(domain: string, domains: string[]) {
     preferred: { domain: 'com', bias: 0.75 },
   });
 }
+
+describe('default "mail" handling (#32)', () => {
+  it.each(['jorge@mask.io', 'a@main.com', 'a@nail.com', 'a@mall.com'])(
+    'does not suggest mail.* for %s',
+    email => {
+      expect(run({ email })).toBeUndefined();
+    }
+  );
+
+  it('does not correct real mail.com addresses', () => {
+    expect(run({ email: 'a@mail.com' })).toBeUndefined();
+  });
+
+  it('still corrects the other default second-level domains', () => {
+    expect(run({ email: 'a@hotmial.com' })?.full).toBe('a@hotmail.com');
+    expect(run({ email: 'a@outlok.com' })?.full).toBe('a@outlook.com');
+    expect(run({ email: 'a@yahooo.com' })?.full).toBe('a@yahoo.com');
+  });
+});

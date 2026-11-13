@@ -1,3 +1,4 @@
+import { KNOWN_UNSUGGESTED_DOMAINS } from './config';
 import encodeEmail from './helpers/encode-email';
 import findClosestDomain from './helpers/find-closest-domain';
 import parseEmail from './helpers/parse-email';
@@ -10,6 +11,10 @@ function suggestEmail(opts: Options): MailSuggestion | undefined {
   const email = parseEmail(encodedEmail);
 
   if (!email) {
+    return undefined;
+  }
+
+  if (KNOWN_UNSUGGESTED_DOMAINS.indexOf(email.domain) !== -1) {
     return undefined;
   }
 

@@ -39,7 +39,6 @@ const POPULAR_DOMAINS = [
   'aim.com',
   'me.com',
   'mac.com',
-  'mailw.com',
   'btinternet.com',
   'charter.net',
   'shaw.ca',
@@ -150,12 +149,19 @@ const POPULAR_TLDS = [
   'website',
 ];
 
+/***
+ * Real but uncommon providers. Addresses on these domains are never corrected,
+ * but they are not offered as suggestions either, because their short names
+ * are too close to many unrelated domains (e.g. mask.io -> mail.io).
+ */
+const KNOWN_UNSUGGESTED_DOMAINS = ['mail.com'];
+
 const DEFAULT_CONFIG = {
   domainThreshold: 2,
   domains: POPULAR_DOMAINS,
 
   secondLevelThreshold: 2,
-  secondLevelDomains: ['yahoo', 'hotmail', 'mail', 'live', 'outlook'],
+  secondLevelDomains: ['yahoo', 'hotmail', 'live', 'outlook'],
 
   topLevelThreshold: 2,
   topLevelDomains: POPULAR_TLDS,
@@ -163,4 +169,9 @@ const DEFAULT_CONFIG = {
   distanceFunction: sift3Distance,
 };
 
-export { DEFAULT_CONFIG, POPULAR_DOMAINS, POPULAR_TLDS };
+export {
+  DEFAULT_CONFIG,
+  KNOWN_UNSUGGESTED_DOMAINS,
+  POPULAR_DOMAINS,
+  POPULAR_TLDS,
+};
