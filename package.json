@@ -11,8 +11,8 @@
     "build": "tsc --project tsconfig.build.json",
     "clean": "rm -rf ./dist/",
     "cm": "cz",
-    "lint": "eslint ./src/ --fix",
-    "prepare": "husky install",
+    "lint": "eslint . --fix",
+    "prepare": "husky",
     "release": "npm run test && npm install && npm run build && npm publish",
     "semantic-release": "semantic-release",
     "test:watch": "jest --watch",
@@ -48,27 +48,28 @@
   },
   "homepage": "https://smashsend.com/tools/email-spell-checker",
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "@ryansonshine/commitizen": "4.2.8",
     "@ryansonshine/cz-conventional-changelog": "^3.3.4",
     "@semantic-release/git": "^11.0.1",
     "@types/jest": "^30.0.0",
     "@types/node": "12.20.11",
     "@types/trim": "0.1.1",
-    "@typescript-eslint/eslint-plugin": "4.22.0",
-    "@typescript-eslint/parser": "4.22.0",
     "conventional-changelog-conventionalcommits": "^10.4.1",
-    "eslint": "7.25.0",
-    "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-prettier": "^3.4.0",
-    "husky": "6.0.0",
+    "eslint": "^10.14.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-n": "^18.5.0",
+    "eslint-plugin-prettier": "^5.5.7",
+    "globals": "^17.14.0",
+    "husky": "^9.1.7",
     "jest": "^30.5.2",
-    "lint-staged": "10.5.4",
-    "prettier": "2.2.1",
+    "lint-staged": "^17.6.0",
+    "prettier": "^3.10.1",
     "semantic-release": "^25.0.9",
     "ts-jest": "^29.4.15",
     "ts-node": "10.2.1",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.72.2"
   },
   "config": {
     "commitizen": {
@@ -76,7 +77,8 @@
     }
   },
   "lint-staged": {
-    "*.ts": "eslint --cache --cache-location .eslintcache --fix"
+    "*.{ts,js,mjs}": "eslint --cache --fix",
+    "*.{json,md,yml}": "prettier --write"
   },
   "release": {
     "branches": [
