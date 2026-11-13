@@ -1,2 +1,10 @@
-# Set the repository to show as TypeScript rather than JS in GitHub
+# Normalize line endings so contributors on any OS produce identical diffs.
+* text=auto eol=lf
+
+# Show the repository as TypeScript on GitHub: compiled/config JS and the
+# framework demos shouldn't count toward the language stats.
 *.js linguist-detectable=false
+demos/** linguist-documentation
+
+# Lockfiles are generated; collapse them in diffs.
+package-lock.json linguist-generated -diff

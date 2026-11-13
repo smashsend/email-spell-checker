@@ -1,6 +1,8 @@
 {
+  "$schema": "https://json.schemastore.org/prettierrc",
   "singleQuote": true,
   "trailingComma": "es5",
   "arrowParens": "avoid",
-  "printWidth": 80
+  "printWidth": 80,
+  "endOfLine": "lf"
 }

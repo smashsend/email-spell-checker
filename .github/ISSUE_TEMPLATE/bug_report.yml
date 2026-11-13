@@ -1,0 +1,48 @@
+name: 🐛 Bug report
+description: A wrong suggestion, a missing suggestion, or a crash.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report this! The fastest way to get a fix is a single `run()` call we can paste into Node.
+  - type: input
+    id: email
+    attributes:
+      label: Input email
+      description: The exact value passed to `run({ email })`.
+      placeholder: jorge@gmial.con
+    validations:
+      required: true
+  - type: input
+    id: actual
+    attributes:
+      label: What you got
+      placeholder: "undefined / { full: 'jorge@gmial.co' } / TypeError: ..."
+    validations:
+      required: true
+  - type: input
+    id: expected
+    attributes:
+      label: What you expected
+      placeholder: "{ full: 'jorge@gmail.com' }"
+    validations:
+      required: true
+  - type: textarea
+    id: options
+    attributes:
+      label: Custom options (if any)
+      description: Any `domains`, `secondLevelDomains`, `topLevelDomains` or thresholds you pass.
+      render: js
+  - type: input
+    id: version
+    attributes:
+      label: Package version
+      placeholder: '1.13.0'
+    validations:
+      required: true
+  - type: input
+    id: runtime
+    attributes:
+      label: Runtime
+      placeholder: Node 22 / Chrome 140 / Bun 1.2

@@ -1,0 +1,23 @@
+name: 🌐 Add a domain or TLD
+description: Propose adding a provider domain or TLD to the defaults.
+labels: [domains]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        We keep the default lists small so suggestions stay accurate: every extra entry can cause false corrections for someone else.
+        You can always extend the lists in your own app with `[...POPULAR_DOMAINS, 'example.com']` (see the README), so only propose entries that most users would benefit from.
+  - type: input
+    id: domain
+    attributes:
+      label: Domain or TLD
+      placeholder: proton.me / .co.il
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: Why should it be a default?
+      description: How widely used is it? Link to market-share data if you have it, and say whether it's a provider domain (`domains`) or a TLD (`topLevelDomains`).
+    validations:
+      required: true
