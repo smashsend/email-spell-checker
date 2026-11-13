@@ -333,4 +333,26 @@ describe('mailSpellChecker', () => {
       );
     });
   });
+
+  describe('domains with regex special characters (#34)', () => {
+    it('does not throw on unbalanced parentheses', () => {
+      expect(() =>
+        run({ email: 'jorge@bigidaunashtnsuaeonsti.co)' })
+      ).not.toThrow();
+      expect(() => run({ email: 'a@foo.(om' })).not.toThrow();
+    });
+
+    it('replaces the TLD literally instead of as a pattern', () => {
+      expect(run({ email: 'a@foo.(om' })).toEqual({
+        address: 'a',
+        domain: 'foo.com',
+        full: 'a@foo.com',
+      });
+      expect(run({ email: 'a@foo.c+m' })).toEqual({
+        address: 'a',
+        domain: 'foo.com',
+        full: 'a@foo.com',
+      });
+    });
+  });
 });
