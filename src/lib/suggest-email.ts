@@ -86,10 +86,13 @@ function suggestEmail(opts: Options): MailSuggestion | undefined {
       email.secondLevelDomain !== ''
     ) {
       // The email address may have a mispelled top-level domain; return a suggestion
-      closestDomain = closestDomain.replace(
-        new RegExp(email.topLevelDomain + '$'),
-        closestTopLevelDomain
-      );
+      // Swap the trailing TLD with plain string ops. Building a RegExp from user
+      // input throws on characters like ")" or "(" and misbehaves on "+" or ".".
+      closestDomain =
+        closestDomain.slice(
+          0,
+          closestDomain.length - email.topLevelDomain.length
+        ) + closestTopLevelDomain;
       rtrn = true;
     }
 
