@@ -1,4 +1,6 @@
-#!/bin/sh
-. "$(dirname "$0")/_/husky.sh"
-
-(exec </dev/tty && node_modules/.bin/cz --hook) || true 2> /dev/null
+# Open the commitizen prompt only for a plain interactive `git commit`.
+# Commits with -m/-F, merges, amends, CI and GUI clients skip it instead of
+# failing on a missing /dev/tty.
+if [ -z "$2" ] && [ -t 1 ] && (exec < /dev/tty) 2>/dev/null; then
+  exec < /dev/tty && npx cz --hook || true
+fi
