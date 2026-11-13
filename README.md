@@ -87,6 +87,18 @@ _Install with yarn:_
 yarn add @zootools/email-spell-checker
 ```
 
+_Use from a CDN (no build step):_
+
+```html
+<script type="module">
+  import emailSpellChecker from 'https://cdn.jsdelivr.net/npm/@zootools/email-spell-checker/+esm';
+
+  console.log(emailSpellChecker.run({ email: 'jorge@gmaik.co' })?.full); // jorge@gmail.com
+</script>
+```
+
+To pin a version, use `https://cdn.jsdelivr.net/npm/@zootools/email-spell-checker@1/+esm`. See [`demos/html`](./demos/html) for a full example.
+
 ### Basic Example
 
 Using the library is easy. Import it, call the `run` function with the email you want to validate, and get a suggestion.
@@ -108,11 +120,23 @@ if (suggestion) {
 }
 ```
 
+> **Spell checker, not a validator.** `run` returns a suggestion when the domain looks like a typo, and `undefined` otherwise. `undefined` means "nothing to suggest". It does **not** mean the email is valid: `run({ email: 'test' })` and `run({ email: 'valid@gmail.com' })` both return `undefined`. If you also need syntax or deliverability checks, use a dedicated validation library alongside this one.
+
 ## Extending Domains
 
 <b>EmailSpellChecker</b> has inbuilt defaults if the `domains`, `secondLevelDomains` or `topLevelDomains` options aren't provided.
 
 The out-of-the-box configuration is the best for 99% of cases. If you are that 1%, here is how you can extend the configuration :).
+
+#### How the defaults work
+
+Suggestions are checked in this order:
+
+1. **`domains`** (`POPULAR_DOMAINS`): full domains such as `gmail.com`. If the whole domain is close to one of these, it is suggested. For example, `gmial.com` → `gmail.com`.
+2. **`secondLevelDomains`** (`POPULAR_SLDS`): provider names without a TLD (`yahoo`, `hotmail`, `live`, `outlook`). They match **any** TLD, which is why big providers with many country domains live here and not in `domains`. For example, `hotmial.co.uk` → `hotmail.co.uk` and `outlok.com` → `outlook.com`.
+3. **`topLevelDomains`** (`POPULAR_TLDS`): TLDs such as `com` and `co.uk`, used to fix the ending. For example, `example.con` → `example.com`.
+
+If the address already uses a known second-level domain together with a known TLD (e.g. `yahoo.fr`), nothing is suggested.
 
 #### Adding your own Domains
 
@@ -121,9 +145,9 @@ You can replace EmailSpellChecker's default domain/TLD suggestions by supplying 
 ```js
 emailSpellChecker.run({
   email: 'jorge@gmaik.co',
-  domains: [...emailSpellChecker.POPULAR_DOMAINS, 'customdomain.com'], // replaces existing domains
-  secondLevelDomains: ['domain', 'yetanotherdomain'], // replaces existing SLDs
-  topLevelDomains: ['com.au', 'ru'], // replaces existing TLDs
+  domains: [...emailSpellChecker.POPULAR_DOMAINS, 'customdomain.com'], // extends the default domains
+  secondLevelDomains: [...emailSpellChecker.POPULAR_SLDS, 'walla'], // extends the default SLDs
+  topLevelDomains: ['com.au', 'ru'], // replaces the default TLDs
 });
 ```
 
