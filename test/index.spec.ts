@@ -355,4 +355,38 @@ describe('mailSpellChecker', () => {
       });
     });
   });
+
+  describe('.com preference for near-tie TLD typos (#33)', () => {
+    it.each([
+      ['test@test.con', 'test@test.com'],
+      ['test@test.cin', 'test@test.com'],
+      ['test@test.cm', 'test@test.com'],
+    ])('suggests .com for %s', (email, full) => {
+      expect(run({ email })?.full).toBe(full);
+    });
+
+    it.each(['test@test.co', 'test@test.ca', 'test@test.cn'])(
+      'leaves valid TLD %s untouched',
+      email => {
+        expect(run({ email })).toBeUndefined();
+      }
+    );
+
+    it('still uses the raw distance for the threshold', () => {
+      // raw distance to "com" is 2.5, above the threshold of 2
+      expect(findClosestDomainWithPreference('xyom', ['com'])).toBeUndefined();
+      // "com" (2.5) is out of range, so the in-range "co" (2) still wins
+      expect(findClosestDomainWithPreference('cxyz', ['com', 'co'])).toBe('co');
+    });
+  });
 });
+
+function findClosestDomainWithPreference(domain: string, domains: string[]) {
+  return findClosestDomain({
+    domain,
+    domains,
+    distanceFunction,
+    threshold: 2,
+    preferred: { domain: 'com', bias: 0.75 },
+  });
+}

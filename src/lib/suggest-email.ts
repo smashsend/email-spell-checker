@@ -3,6 +3,8 @@ import findClosestDomain from './helpers/find-closest-domain';
 import parseEmail from './helpers/parse-email';
 import { MailSuggestion, Options } from './types';
 
+const PREFERRED_TLD = { domain: 'com', bias: 0.75 };
+
 function suggestEmail(opts: Options): MailSuggestion | undefined {
   const encodedEmail = encodeEmail(opts.email.toLowerCase());
   const email = parseEmail(encodedEmail);
@@ -63,6 +65,10 @@ function suggestEmail(opts: Options): MailSuggestion | undefined {
     domains: topLevelDomains,
     distanceFunction,
     threshold: opts.topLevelThreshold,
+    // .com is far more common than .co/.cn/.ca, so typos like ".con" or ".cin"
+    // should resolve to it when it is a near tie.
+    preferred:
+      topLevelDomains.indexOf('com') !== -1 ? PREFERRED_TLD : undefined,
   });
   if (email.domain) {
     closestDomain = email.domain;
